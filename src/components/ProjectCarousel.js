@@ -1,41 +1,44 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { Link } from "react-router-dom";
-import arrowf from '../assets/icons/arrowf.png';
+import arrowf from "../assets/icons/arrowf.png";
 
-const ProjectCarousel = ({ allProjects }) => {
-  const [index, setIndex] = useState(0);
+const getVisibleCount = (width) => {
+  if (width < 640) return 3.5;
+  if (width < 768) return 5;
+  if (width < 1024) return 5.5;
+  if (width < 1280) return 5;
+  return 7;
+};
+
+const ProjectCarousel = ({ allProjects = [] }) => {
   const controls = useAnimation();
   const carouselRef = useRef(null);
+  const [visibleCount, setVisibleCount] = useState(getVisibleCount(window.innerWidth));
+  const [currentIndex, setCurrentIndex] = useState(visibleCount);
 
-  const getVisibleCount = () => {
-    if (window.innerWidth < 640) return 3.5;
-    if (window.innerWidth < 768) return 5;
-    if (window.innerWidth < 1024) return 5.5;
-    if (window.innerWidth < 1280) return 5;
-    return 7;
-  };
-
-  const visibleCount = getVisibleCount();
   const stepSize = 100 / visibleCount;
 
   const extendedImages = [
-    ...allProjects.slice(-visibleCount), // prepend
+    ...allProjects.slice(-visibleCount),
     ...allProjects,
-    ...allProjects.slice(0, visibleCount), // append
+    ...allProjects.slice(0, visibleCount),
   ];
-
   const realIndexOffset = visibleCount;
-
-  const [currentIndex, setCurrentIndex] = useState(realIndexOffset);
 
   useEffect(() => {
     const handleResize = () => {
-      window.location.reload(); // Simplest way to re-trigger layout logic
+      setVisibleCount(getVisibleCount(window.innerWidth));
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    setCurrentIndex(realIndexOffset);
+    controls.set({ x: `-${realIndexOffset * stepSize}%` });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visibleCount]);
 
   const slideTo = async (newIndex) => {
     setCurrentIndex(newIndex);
@@ -44,7 +47,6 @@ const ProjectCarousel = ({ allProjects }) => {
       transition: { ease: "easeInOut", duration: 0.5 },
     });
 
-    // Looping logic: jump without animation
     if (newIndex >= extendedImages.length - visibleCount) {
       const resetIndex = realIndexOffset;
       setCurrentIndex(resetIndex);
@@ -59,6 +61,8 @@ const ProjectCarousel = ({ allProjects }) => {
   const nextSlide = () => slideTo(currentIndex + 1);
   const prevSlide = () => slideTo(currentIndex - 1);
 
+  if (!allProjects.length) return null;
+
   return (
     <div className="relative flex flex-col items-center mt-3 w-full pb-[10px] md:pb-[30px]">
       <div className="relative overflow-hidden w-full">
@@ -68,39 +72,39 @@ const ProjectCarousel = ({ allProjects }) => {
           animate={controls}
           drag="x"
           onDragEnd={(event, info) => {
-            const swipePower = Math.abs(info.offset.x) * info.velocity.x;
-            if (swipePower < -100) nextSlide();
-            else if (swipePower > 100) prevSlide();
+            const swipe = info.offset.x * info.velocity.x;
+            if (swipe < -100) nextSlide();
+            else if (swipe > 100) prevSlide();
           }}
           style={{ cursor: "grab" }}
         >
-          {extendedImages.map((image, i) => (
-           <Link
-           to={image.link}
-           key={i}
-           className="flex-shrink-0 w-[120px] md:w-[180px]"
-         >
+          {extendedImages.map((item, i) => (
+            <Link
+              key={i}
+              to={item.link}
+              className="flex-shrink-0 w-[120px] md:w-[180px]"
+            >
               <img
-                src={image.image}
+                src={item.image}
                 alt={`slide-${i}`}
                 className="w-full h-[150px] md:h-[232px] object-contain"
               />
               <div className="text-white py-1 text-[14px] w-[80%] mx-auto font-bold">
-                {image.title}
+                {item.title}
               </div>
             </Link>
           ))}
         </motion.div>
       </div>
 
-      {/* Right Arrow Only */}
+      {/* Right Arrow */}
       <button
         onClick={nextSlide}
         className="absolute right-[10px] md:right-[-20px] top-[25%] md:top-[40%] transform -translate-y-1/2 h-8 md:h-10 w-8 md:w-10 bg-[#97AA9F] opacity-75 p-2 rounded-[9px] flex items-center justify-center"
       >
         <img
           src={arrowf}
-          alt=""
+          alt="Next"
           className="h-[18px] w-auto object-cover object-center"
         />
       </button>
