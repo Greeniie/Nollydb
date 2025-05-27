@@ -3,6 +3,7 @@ import {
   SearchOutlined,
   CloseCircleOutlined,
   CloseOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
 import logo from "../assets/logos/Group 1.png";
 import add from "../assets/icons/Group 3.png";
@@ -76,11 +77,7 @@ const LandingNav = () => {
       <div className="md:hidden">
         <div className="flex justify-between items-center gap-[20px] py-[20px] md:hidden px-[20px]">
           <div className="flex gap-[20px] items-center">
-            <img
-              src={ham}
-              alt="menu"
-              className="h-[30px] w-auto object-cover object-center"
-            />
+            <MenuOutlined className="text-[30px]" style={{ color: "#fff" }} />
             <img src={logo} className="h-[30px] w-auto" alt="logo" />
           </div>
 
@@ -135,11 +132,8 @@ const LandingNav = () => {
 
       <div className="w-[90%] mx-auto py-4 hidden md:flex justify-between items-center z-50 relative">
         <div className="flex gap-[30px] items-center">
-          <img
-            src={ham}
-            alt="menu"
-            className="h-[34px] w-auto object-cover object-center"
-          />
+          <MenuOutlined className="text-[34px]" style={{ color: "#fff" }} />
+
           <img
             src={logo}
             className="h-[35px] w-auto object-contain flex-shrink-0"
