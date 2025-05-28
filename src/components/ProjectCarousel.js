@@ -14,7 +14,9 @@ const getVisibleCount = (width) => {
 const ProjectCarousel = ({ allProjects = [] }) => {
   const controls = useAnimation();
   const carouselRef = useRef(null);
-  const [visibleCount, setVisibleCount] = useState(getVisibleCount(window.innerWidth));
+  const [visibleCount, setVisibleCount] = useState(
+    getVisibleCount(window.innerWidth)
+  );
   const [currentIndex, setCurrentIndex] = useState(visibleCount);
 
   const stepSize = 100 / visibleCount;
@@ -80,8 +82,8 @@ const ProjectCarousel = ({ allProjects = [] }) => {
         >
           {extendedImages.map((item, i) => (
             <Link
+              to={`/title/details/${item.id}`}
               key={i}
-              to={item.link}
               className="flex-shrink-0 w-[120px] md:w-[180px]"
             >
               <img

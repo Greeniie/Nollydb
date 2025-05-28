@@ -10,16 +10,17 @@ import img4 from "../assets/testimgs/01566627_poster_w780 1.png";
 import ProjectCarousel from "./ProjectCarousel";
 import add from "../assets/icons/Group 3.png";
 import join from "../assets/icons/Vector.png";
+import { Link } from "react-router-dom";
 
 const RecentlyAdded = () => {
   const movies = [
-    { image: img1, title: "Andor and the fighting Saber" },
-    { image: img2, title: "The Land man is coming for you" },
-    { image: img3, title: "Peacemaker" },
-    { image: img4, title: "Mission Impossible" },
-    { image: img1, title: "Alakada Reloaded" },
-    { image: img2, title: "Anikulapo 2" },
-    { image: img3, title: "Sinners" },
+    { id: 1, image: img1, title: "Andor and the fighting Saber" },
+    { id: 2, image: img2, title: "The Land man is coming for you" },
+    { id: 3, image: img3, title: "Peacemaker" },
+    { id: 4, image: img4, title: "Mission Impossible" },
+    { id: 5, image: img1, title: "Alakada Reloaded" },
+    { id: 6, image: img2, title: "Anikulapo 2" },
+    { id: 7, image: img3, title: "Sinners" },
   ];
 
   const genrelist = [
@@ -73,28 +74,31 @@ const RecentlyAdded = () => {
             </div>
           </div>{" "}
           <div className="flex items-center">
-            <button className="bg-[#FAFAFA] font-bold text-[12px]  text-black  flex gap-[10px] border-r-2 border-[#000] justify-center items-center py-[10px] px-[20px]">
+            <Link
+              to="/add-new-title"
+              className="bg-[#FAFAFA] font-bold text-[12px]  text-black  flex gap-[10px] border-r-2 border-[#000] justify-center items-center py-[10px] px-[20px]"
+            >
               <span>Add new title</span>{" "}
               <img
                 src={add}
                 alt="add"
                 className="h-[22px] w-auto object-cover object-center"
               />
-            </button>
-            <button className="bg-[#FAFAFA] font-bold text-[12px] text-black  flex gap-[10px] justify-center items-center py-[10px] px-[20px]">
+            </Link>
+            <Link className="bg-[#FAFAFA] font-bold text-[12px] text-black  flex gap-[10px] justify-center items-center py-[10px] px-[20px]">
               <span>Join a title</span>{" "}
               <img
                 src={join}
                 alt="join"
                 className="h-[14px] w-auto object-cover object-center"
               />
-            </button>
+            </Link>
           </div>
         </div>
         <div className="md:hidden bg-[#F70000] p-2 text-white text-[13px] font-[Kdam Thmor Pro] font-normal">
-            The Nollywood’s film directory — curated by the professionals who
-            made them.
-          </div>
+          The Nollywood’s film directory — curated by the professionals who made
+          them.
+        </div>
         <div className="flex gap-[5px] items-center pb-0 md:pb-[20px] w-[90%] md:w-full mx-auto pt-[20px] md:pt-0">
           <div className="flex items-center gap-[10px] font-[Inter] font-bold text-[15px] text-[#b1b1b1]">
             <img

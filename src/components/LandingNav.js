@@ -8,9 +8,8 @@ import {
 import logo from "../assets/logos/Group 1.png";
 import add from "../assets/icons/Group 3.png";
 import join from "../assets/icons/Vector.png";
-import ham from "../assets/icons/Menu.png";
 import user from "../assets/icons/user.png";
-
+import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 
 const LandingNav = () => {
@@ -71,14 +70,41 @@ const LandingNav = () => {
     return () => clearTimeout(delayDebounce);
   }, [searchValue]);
 
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const openMenu = () => {
+    setMenuVisible(true);
+    setTimeout(() => setShowMobileMenu(true), 10); // allow transition class to apply
+  };
+
+  const closeMenu = () => {
+    setShowMobileMenu(false);
+    setTimeout(() => setMenuVisible(false), 300); // match transition duration
+  };
+
+  const menuLinks = [
+    { title: "Add a Title", url: "/add-a-title" },
+    { title: "Join a Title", url: "/" },
+    { title: "About us", url: "/" },
+    { title: "About Nollywood", url: "/" },
+  ];
+
   return (
     <div className="bg-[#232323] relative z-50">
       {/* Navbar */}
       <div className="md:hidden">
         <div className="flex justify-between items-center gap-[20px] py-[20px] md:hidden px-[20px]">
           <div className="flex gap-[20px] items-center">
-            <MenuOutlined className="text-[30px]" style={{ color: "#fff" }} />
-            <img src={logo} className="h-[30px] w-auto" alt="logo" />
+            <button
+              className="text-[34px] text-white focus:outline-none"
+              onClick={openMenu}
+            >
+              <MenuOutlined />
+            </button>
+            <Link to="/">
+              <img src={logo} className="h-[30px] w-auto" alt="logo" />
+            </Link>
           </div>
 
           {/* Search Button */}
@@ -132,13 +158,20 @@ const LandingNav = () => {
 
       <div className="w-[90%] mx-auto py-4 hidden md:flex justify-between items-center z-50 relative">
         <div className="flex gap-[30px] items-center">
-          <MenuOutlined className="text-[34px]" style={{ color: "#fff" }} />
+          <button
+            className="text-[34px] text-white focus:outline-none"
+            onClick={openMenu}
+          >
+            <MenuOutlined />
+          </button>
 
-          <img
-            src={logo}
-            className="h-[35px] w-auto object-contain flex-shrink-0"
-            alt="logo"
-          />
+          <Link to="/">
+            <img
+              src={logo}
+              className="h-[35px] w-auto object-contain flex-shrink-0"
+              alt="logo"
+            />
+          </Link>
         </div>
         <div className={`flex items-center ${menuSpacing} flex-nowrap`}>
           <div>
@@ -178,25 +211,55 @@ const LandingNav = () => {
           </div>
 
           <div className="flex items-center gap-[20px]">
-            <button className="bg-[#FAFAFA] font-bold text-[12px]  text-black rounded-[12px] flex gap-[20px] justify-center items-center py-[10px] px-[25px]">
+            <Link
+              to="/add-new-title"
+              className="bg-[#FAFAFA] font-bold text-[12px] cursor-pointer  text-black rounded-[12px] flex gap-[20px] justify-center items-center py-[10px] px-[25px]"
+            >
               <span>Add new title</span>{" "}
               <img
                 src={add}
                 alt="add"
                 className="h-[22px] w-auto object-cover object-center"
               />
-            </button>
-            <button className="bg-[#FAFAFA] font-bold text-[12px] text-black rounded-[12px] flex gap-[20px] justify-center items-center py-[10px] px-[25px]">
+            </Link>
+            <div className="bg-[#FAFAFA] font-bold text-[12px] cursor-pointer  text-black rounded-[12px] flex gap-[20px] justify-center items-center py-[10px] px-[25px]">
               <span>Join a title</span>{" "}
               <img
                 src={join}
                 alt="join"
                 className="h-[14px] w-auto object-cover object-center"
               />
-            </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* MOBILE MENU OVERLAY */}
+      {menuVisible && (
+        <div
+          className={`fixed top-0 left-0 w-[431px] h-[100dvh] md:h-[715px] bg-[#000] text-[#b1b1b1] z-[9999] shadow-lg p-8 flex flex-col gap-6 transition-transform duration-300 transform ${
+            showMobileMenu ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <button
+            onClick={closeMenu}
+            className="text-white text-xl self-end focus:outline-none border-[3px] border-white flex justify-center item-center h-[54px] w-[54px] rounded-[8px] "
+          >
+            <CloseOutlined />
+          </button>
+
+          {menuLinks.map((link, i) => (
+            <Link
+              key={i}
+              to={link.url}
+              onClick={closeMenu}
+              className="text-[#b1b1b1] hover:text-white font-bold text-[24px] font-[Inter]"
+            >
+              {link.title}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {/* Search Overlay */}
       {showSearchOverlay && (
