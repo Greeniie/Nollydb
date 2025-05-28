@@ -241,12 +241,14 @@ const LandingNav = () => {
             showMobileMenu ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <button
-            onClick={closeMenu}
-            className="text-white text-xl self-end focus:outline-none border-[3px] border-white flex justify-center item-center h-[54px] w-[54px] rounded-[8px] "
-          >
-            <CloseOutlined />
-          </button>
+          <div className="flex justify-end w-full px-4 pt-4 md:px-6 md:pt-6">
+            <button
+              onClick={closeMenu}
+              className="text-white text-xl focus:outline-none border-[3px] border-white flex justify-center items-center h-[54px] w-[54px] rounded-[8px]"
+            >
+              <CloseOutlined />
+            </button>
+          </div>
 
           {menuLinks.map((link, i) => (
             <Link
